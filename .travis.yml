@@ -1,0 +1,38 @@
+language: generic
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t hardgrdb/fibonnaci-app-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true hardgrdb/fibonnaci-app-test npm run test -- --coverage
+
+after_success:
+  - docker build -t hardgrdb/fibonacci-app ./client
+  - docker build -t hardgrdb/fibonacci-nginx ./nginx
+  - docker build -t hardgrdb/fibonacci-server ./server
+  - docker build -t hardgrdb/fibonacci-worker ./worker
+
+  # Login to Docker CLI to connect to DockerHub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Push images to DockerHub
+  - docker push hardgrdb/fibonnaci-app
+  - docker push hardgrdb/fibonnaci-nginx
+  - docker push hardgrdb/fibonnaci-server
+  - docker push hardgrdb/fibonnaci-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "docker-react2"
+  env: "DockerReact2-env"
+  bucket_name: "elasticbeanstalk-us-east-1-434478805792"
+  bucket_path: "docker-react2"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
