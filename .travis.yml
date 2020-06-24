@@ -8,7 +8,7 @@ before_install:
   - docker build -t hardgrdb/fibonnaci-app-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true hardgrdb/fibonnaci-app-test npm run test -- --coverage
+  - docker run -e CI=true hardgrdb/fibonnaci-app-test npm test -- --coverage
 
 after_success:
   - docker build -t hardgrdb/fibonacci-app ./client
