@@ -20,7 +20,7 @@ after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   # Push images to DockerHub
-  - docker push hardgrdb/fibonnaci-app
-  - docker push hardgrdb/fibonnaci-nginx
-  - docker push hardgrdb/fibonnaci-server
-  - docker push hardgrdb/fibonnaci-worker
+  - docker push hardgrdb/fibonacci-app
+  - docker push hardgrdb/fibonacci-nginx
+  - docker push hardgrdb/fibonacci-server
+  - docker push hardgrdb/fibonacci-worker
