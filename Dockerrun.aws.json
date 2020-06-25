@@ -1,0 +1,41 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "hardgrdb/fibonacci-app",
+            "hostname": "client",
+            "essential": false
+        },
+
+        {
+            "name": "server",
+            "image": "hardgrdb/fibonacci-server",
+            "hostname": "api",
+            "essential": false
+        },
+
+        {
+            "name": "worker",
+            "image": "hardgrdb/fibonacci-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+
+        {
+            "name": "nginx",
+            "image": "hardgrdb/fibonacci-nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client",
+                "server"
+            ]
+        }
+    ]
+}
