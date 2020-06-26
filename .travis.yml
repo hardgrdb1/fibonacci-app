@@ -24,3 +24,16 @@ after_success:
   - docker push hardgrdb/fibonacci-nginx
   - docker push hardgrdb/fibonacci-server
   - docker push hardgrdb/fibonacci-worker
+
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: fibonacci-app
+  env: FibonacciApp-env
+  bucket_name: elasticbeanstalk-us-east-1-434478805792
+  bucket_path: fibonacci-app
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
